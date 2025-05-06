@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.env
+venv/
+
+# Docker
+data/
+postgres_data/
+
+# IDE
+.vscode/
+.idea/
+
+# Логи и временные файлы
+*.log
+*.sqlite
