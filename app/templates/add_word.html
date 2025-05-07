@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить слово</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 0 auto; padding: 20px; }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        input, button { padding: 8px; font-size: 16px; }
+        button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .message { margin-top: 20px; padding: 10px; border-radius: 4px; }
+        .success { background: #dff0d8; color: #3c763d; }
+        .error { background: #f2dede; color: #a94442; }
+    </style>
+</head>
+<body>
+    <h1>Добавить новое слово</h1>
+    <form id="wordForm">
+        <input type="text" name="word" placeholder="Слово (английский)" required>
+        <input type="text" name="translation" placeholder="Перевод (русский)" required>
+        <button type="submit">Добавить</button>
+    </form>
+    <div id="message" class="message" style="display: none;"></div>
+
+    <h2>Последние добавленные слова</h2>
+<ul id="wordList"></ul>
+
+<script>
+// Функция для загрузки списка слов
+async function loadWords() {
+    const response = await fetch('/words');
+    const words = await response.json();
+    const list = document.getElementById('wordList');
+    list.innerHTML = words.map(w => 
+        `<li>${w.word} - ${w.translation}</li>`
+    ).join('');
+}
+
+// Загружаем слова при открытии страницы
+loadWords();
+
+// Обновляем список после добавления нового слова
+// Добавьте это в обработчик успешной отправки формы:
+// loadWords();
+</script>
+
+    <script>
+        document.getElementById('wordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                word: e.target.word.value,
+                translation: e.target.translation.value
+            };
+
+            try {
+                const response = await fetch('/words/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                const messageEl = document.getElementById('message');
+                messageEl.style.display = 'block';
+                
+                if (response.ok) {
+                    messageEl.textContent = `Успешно добавлено: ${formData.word} - ${formData.translation}`;
+                    messageEl.className = 'message success';
+                    e.target.reset(); // Очищаем форму
+                } else {
+                    messageEl.textContent = `Ошибка: ${result.error || 'Неизвестная ошибка'}`;
+                    messageEl.className = 'message error';
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        });
+    </script>
+</body>
+</html>
