@@ -4,6 +4,16 @@ from app import db
 
 bp = Blueprint('words', __name__, url_prefix='/words')
 
+main_bp = Blueprint('main', __name__)
+
+
+@main_bp.route('/')
+def home():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    words = WordPair.query.paginate(page=page, per_page=per_page)
+    return render_template('home.html', words=words)
+
 
 @bp.route('/', methods=['GET'])
 def get_words():

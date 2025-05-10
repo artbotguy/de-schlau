@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta charset="UTF-8">
+        
+        <!-- Базовые стили (всегда загружаются) -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+        
+        <!-- Блок для дополнительных CSS -->
+        {% block css %}{% endblock %}
+    </head>
+<body>
+    <header>
+        <a href="/">Главная</a>
+        <a href="/words">Слова</a>
+        <a href="/words/add">Добавление слов</a>
+    </header>
+    <main>
+        <div class="content">
+            {% block content %}
+            <!-- Сюда вставится дочерний шаблон -->
+            {% endblock %}
+        </div>
+
+    </main>
+    <footer>
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        {% block js %}{% endblock %}
+
+    </footer>
+
+</body>
+</html>

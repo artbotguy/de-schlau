@@ -1,15 +1,12 @@
-# Flask Docker Starter
+TODO
 
-Проект на Flask с Docker (Gunicorn + Nginx + PostgreSQL)
+- картинки к словам
 
-## Запуск
-```bash
-docker-compose up --build
-```
-Приложение будет доступно на http://localhost
+Модель Word:
+  + статус = новое/знакомое/изучено
 
-## Структура
-- `app/` - исходный код Flask-приложения
-- `nginx.conf` - конфигурация Nginx
-- `Dockerfile` - сборка образа для Flask/Gunicorn
-- `docker-compose.yml` - оркестрация сервисов
+
+
+DOING:
+- добавление в модель examples
+- добавление миграция

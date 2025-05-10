@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}DeSchlau{% endblock %}
+
+{% block content %}
+    <h1>DeSchlau</h1>
+
+
+<div class="cards-container">
+    {% for word in words.items %}
+    <div class="card" onclick="flipCard(this)" data-word="{{ word.word }}" data-translation="{{ word.translation }}">
+        <div class="card-front">
+            <h2>{{ word.word }}</h2>
+            <p class="hint">Нажмите, чтобы перевернуть</p>
+        </div>
+        <div class="card-back">
+            <h2>{{ word.translation }}</h2>
+            {% if word.examples %}
+            <div class="examples">
+                {{ word.examples|replace('\n', '<br>')|safe }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if words.has_prev %}
+    <a href="{{ url_for('words.cards', page=words.prev_num) }}" class="btn">Назад</a>
+    {% endif %}
+    
+    {% if words.has_next %}
+    <a href="{{ url_for('words.cards', page=words.next_num) }}" class="btn">Еще 10 слов</a>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
