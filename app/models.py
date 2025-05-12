@@ -6,6 +6,8 @@ class WordPair(db.Model):
     word = db.Column(db.String(100), nullable=False)
     translation = db.Column(db.String(100))
     examples = db.Column(db.Text, nullable=True)
+    # 'new', 'familiar', 'studied
+    c_status = db.Column(db.String(100), nullable=True)  # nullable ВРЕМЕННО
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     def __repr__(self):
