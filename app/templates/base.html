@@ -3,32 +3,38 @@
     <head>
         <title>{% block title %}{% endblock %}</title>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <!-- Базовые стили (всегда загружаются) -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         
         <!-- Блок для дополнительных CSS -->
         {% block css %}{% endblock %}
     </head>
 <body>
-    <header>
-        <a href="/">Главная</a>
-        <a href="/words">Слова</a>
-        <a href="/words/add">Добавление слов</a>
+    <header class="bg-light py-3">
+        <div class="container">
+            <nav class="nav">
+                <a class="nav-link" href="/">Главная</a>
+                <a class="nav-link" href="/words">Слова</a>
+                <a class="nav-link" href="/words/add">Добавление слов</a>
+            </nav>
+        </div>
     </header>
-    <main>
+    <main class="container my-4">
         <div class="content">
             {% block content %}
             <!-- Сюда вставится дочерний шаблон -->
             {% endblock %}
         </div>
-
     </main>
-    <footer>
-        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
-        {% block js %}{% endblock %}
-
+    <footer class="bg-light py-3 mt-4">
+        <div class="container">
+            <!-- Bootstrap 5 JS Bundle with Popper -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+            {% block js %}{% endblock %}
+        </div>
     </footer>
-
 </body>
 </html>

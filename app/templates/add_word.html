@@ -2,22 +2,28 @@
 
 {% block title %}Моя страница{% endblock %}
 
-{% block css %}{% endblock %}
-
 {% block content %}
-    <h1>Добавить новое слово</h1>
-    <form id="wordForm">
-        <input type="text" name="word" placeholder="Слово (немецкий)" required>
-        <input type="text" name="translation" placeholder="Перевод (русский)" required>
-        <button type="submit">Добавить</button>
+<div class="container">
+    <h1 class="mb-4">Добавить новое слово</h1>
+    <form id="wordForm" class="mb-4">
+        {% if word %}
+            <input type="hidden" id="wordId" value="{{ word.id }}">
+        {% endif %}
+        {% for field in fields %}
+        <div class="mb-3">
+            <label for="">{{ field|capitalize }}</label>
+            <input type="text" class="form-control" name="{{ field }}" {% if word %}value="{{word[field]}}"{% endif %} placeholder="{{ field|capitalize }}" {% if field == 'word' %}required{% endif %}>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Добавить</button>
     </form>
-    <div id="message" class="message" style="display: none;"></div>
+    <div id="message" class="alert alert-dismissible fade show" style="display: none;"></div>
 
-    <h2>Последние добавленные слова</h2>
-    <ul id="wordList"></ul>
+    <h2 class="mt-5 mb-3">Последние добавленные слова</h2>
+    <ul id="wordList" class="list-group"></ul>
+</div>
 {% endblock %}
 
 {% block js %}
     <script src="{{ url_for('static', filename='js/words/add.js') }}"></script>
 {% endblock %}
-

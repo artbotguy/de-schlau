@@ -16,7 +16,7 @@ ERRORS
     
 
 2. Создание новой миграции (после изменения моделей)
-    docker-compose exec web flask db migrate -m "Описание изменений"
+    docker-compose exec web flask db migrate -m "test"
     Генерирует файл миграции в migrations/versions/
 
 3. Применение миграций

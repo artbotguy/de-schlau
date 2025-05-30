@@ -5,7 +5,7 @@ async function loadWords() {
     const words = await response.json();
     const list = document.getElementById('wordList');
     list.innerHTML = words.map(w =>
-        `<li>${w.word} - ${w.translation}</li>`
+        `<li>${w.id} - ${w.word} - ${w.translation}</li>`
     ).join('');
 }
 
@@ -25,7 +25,7 @@ document.getElementById('wordForm').addEventListener('submit', async (e) => {
     };
 
     try {
-        const response = await fetch('/words/add', {
+        const response = await fetch('/words/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
