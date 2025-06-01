@@ -17,7 +17,8 @@ def home():
 
 @bp.route('/', methods=['GET'])
 def get_words():
-    words = WordPair.query.order_by(WordPair.id.desc()).limit(10).all()
+    # words = WordPair.query.order_by(WordPair.id.desc()).limit(10).all()
+    words = WordPair.query.order_by(WordPair.id.desc()).all()
     # return jsonify([{
     #     'id': w.id,
     #     'word': w.word,
@@ -50,7 +51,10 @@ def save_word():
 
         # Если есть ID - редактируем существующее слово
         if 'id' in data and data['id']:
-            word = WordPair.query.get_or_404(data['id'])
+            word = WordPair.query.get(data['id'])
+            if not word:
+                return jsonify({"error": "Слово не найдено"}), 404
+
             word.word = data['word']
             word.translation = data.get('translation', '')
             word.examples = data.get('examples', '')

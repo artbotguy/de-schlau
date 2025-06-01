@@ -7,40 +7,43 @@ services:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - ./postgres_data:/var/lib/postgresql/data/
+      # - postgres_data:/var/lib/postgresql/data/
     networks:
       - backend
-  # web:
-  #   build: .
-  #   container_name: web
-  #   command: gunicorn --bind 0.0.0.0:8000 --reload "app:create_app()"
-  #   volumes:
-  #     - .:/app
-  #     - ./migrations:/app/migrations
-  #   environment:
-  #     FLASK_APP: app/__init__.py
-  #   depends_on:
-  #     - db
-  #   networks:
-  #     - backend
   web:
     build: .
     container_name: web
-    # command: >
-    #   sh -c "flask db init && flask db migrate -m 'Initial' && flask db upgrade && gunicorn --bind 0.0.0.0:8000 --reload 'app:create_app()'"
     command: gunicorn --bind 0.0.0.0:8000 --reload 'app:create_app()'
-
     volumes:
       - .:/app
       - ./migrations:/app/migrations # Важно сохранять миграции
     environment:
-      FLASK_APP: "app:create_app()" # 🔴 Исправлено!
+      FLASK_APP: "app:create_app()"
       FLASK_ENV: "development" # Добавлено для авто-перезагрузки
       DATABASE_URL: "postgresql://myuser:mypassword@db/mydb" # Добавлено
     depends_on:
       - db
     networks:
       - backend
+  # web:
+  #   build: .
+  #   container_name: web
+  #   command: sh -c "pip install debugpy && python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m gunicorn --bind 0.0.0.0:8000 --reload 'app:create_app()'"
+  #   volumes:
+  #     - .:/app
+  #     - ./migrations:/app/migrations
+  #   environment:
+  #     FLASK_APP: "app:create_app()"
+  #     FLASK_ENV: "development"
+  #     DATABASE_URL: "postgresql://myuser:mypassword@db/mydb"
+  #   ports:
+  #     - "8000:8000"
+  #     - "5678:5678"  # Добавляем порт для отладчика
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - backend
 
   nginx:
     image: nginx:latest
@@ -53,9 +56,8 @@ services:
       - web
     networks:
       - backend
-
-volumes:
-  postgres_data:
+  # volumes:
+  # postgres_data:
 
 
 networks:

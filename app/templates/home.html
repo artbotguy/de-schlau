@@ -27,15 +27,5 @@
         </div>
         {% endfor %}
     </div>
-
-    <div class="d-flex justify-content-between">
-        {% if words.has_prev %}
-        <a href="{{ url_for('words.cards', page=words.prev_num) }}" class="btn btn-outline-primary">Назад</a>
-        {% endif %}
-        
-        {% if words.has_next %}
-        <a href="{{ url_for('words.cards', page=words.next_num) }}" class="btn btn-outline-primary ms-auto">Еще 10 слов</a>
-        {% endif %}
-    </div>
 </div>
 {% endblock %}

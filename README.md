@@ -6,3 +6,9 @@ DeSchlau
     1. Может понадобится выполнять (и далее что прописано в соотв. ошибке):
         docker-compose exec web flask db init
     
+
+
+ALL_ERRORS
+    docker
+        ERR: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+        SOL: rm ~/.docker/config.json
