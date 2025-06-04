@@ -11,39 +11,41 @@ services:
       # - postgres_data:/var/lib/postgresql/data/
     networks:
       - backend
-  web:
-    build: .
-    container_name: web
-    command: gunicorn --bind 0.0.0.0:8000 --reload 'app:create_app()'
-    volumes:
-      - .:/app
-      - ./migrations:/app/migrations # Важно сохранять миграции
-    environment:
-      FLASK_APP: "app:create_app()"
-      FLASK_ENV: "development" # Добавлено для авто-перезагрузки
-      DATABASE_URL: "postgresql://myuser:mypassword@db/mydb" # Добавлено
-    depends_on:
-      - db
-    networks:
-      - backend
   # web:
   #   build: .
   #   container_name: web
-  #   command: sh -c "pip install debugpy && python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m gunicorn --bind 0.0.0.0:8000 --reload 'app:create_app()'"
+  #   command: gunicorn --bind 0.0.0.0:8000 --reload 'app:create_app()'
   #   volumes:
   #     - .:/app
-  #     - ./migrations:/app/migrations
+  #     - ./migrations:/app/migrations # Важно сохранять миграции
   #   environment:
   #     FLASK_APP: "app:create_app()"
-  #     FLASK_ENV: "development"
-  #     DATABASE_URL: "postgresql://myuser:mypassword@db/mydb"
-  #   ports:
-  #     - "8000:8000"
-  #     - "5678:5678"  # Добавляем порт для отладчика
+  #     FLASK_ENV: "development" # Добавлено для авто-перезагрузки
+  #     DATABASE_URL: "postgresql://myuser:mypassword@db/mydb" # Добавлено
   #   depends_on:
   #     - db
   #   networks:
   #     - backend
+  web:
+    build:
+      context: .
+      target: development # Используем development-сборку
+    container_name: web
+    command: sh -c "sleep 5 && python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m flask run --host=0.0.0.0 --port=8000"
+    volumes:
+      - .:/app
+      - ./migrations:/app/migrations
+    environment:
+      FLASK_APP: "app:create_app()" # Уточните имя вашего Flask-приложения
+      FLASK_ENV: "development"
+      DATABASE_URL: "postgresql://myuser:mypassword@db/mydb"
+    ports:
+      - "8000:8000"
+      - "5678:5678"
+    depends_on:
+      - db
+    networks:
+      - backend
 
   nginx:
     image: nginx:latest

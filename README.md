@@ -10,5 +10,7 @@ DeSchlau
 
 ALL_ERRORS
     docker
-        ERR: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
-        SOL: rm ~/.docker/config.json
+        ERR: 
+            error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+        SOL: 
+            rm ~/.docker/config.json
